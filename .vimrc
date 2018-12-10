@@ -1,7 +1,7 @@
 " dot file for my personal vim configuration
 " Author        : Tushar Srivastava
 " Created Date  : 5 October 2018
-" Last Modified : 6 October 2018
+" Last Modified : 23 November 2018
 
 " Base configuration
 set modelines=5
@@ -38,6 +38,10 @@ Plugin 'w0rp/ale'
 Plugin 'itchyny/vim-gitbranch'
 Plugin 'plytophogy/vim-virtualenv'
 Plugin 'shemerey/vim-project'
+Plugin 'mhartington/oceanic-next'
+Plugin 'schickele/vim-nachtleben'
+Plugin 'vim-vdebug/vdebug'
+Plugin 'heavenshell/vim-pydocstring'
 
 call vundle#end()
 
@@ -57,8 +61,12 @@ set updatetime=500
 " Configure Theme
 syntax on
 set t_Co=256
+set termguicolors
 colorscheme srcery
+"color nachtleben
 let g:srcery_italic = 1
+"let g:oceanic_next_terminal_bold = 1
+"let g:oceanic_next_terminal_italic = 1
 
 " Configure StatusLine Configuration
 au colorscheme * hi vertsplit cterm=NONE ctermfg=Green ctermbg=NONE
@@ -102,7 +110,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : '☒',
     \ "Unknown"   : "?"
     \ }
-
+nmap <F12> :NERDTreeToggle<CR>
 " YouCompleteMe configuration
 let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
 let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
@@ -174,3 +182,27 @@ augroup end
 if !empty($VIRTUAL_ENV) || !empty($PROJECT_HOME)
     au vimenter * VirtualEnvActivate
 endif
+
+let s:hidden_all = 0
+function! ToggleHiddenAll()
+    if s:hidden_all  == 0
+        let s:hidden_all = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+    else
+        let s:hidden_all = 0
+        set showmode
+        set ruler
+        set laststatus=2
+        set showcmd
+    endif
+endfunction
+
+nnoremap <S-h> :call ToggleHiddenAll()<CR>
+
+set foldmethod=indent   
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
